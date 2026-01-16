@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install fteqcc
+      run: sudo apt-get update && sudo apt-get install -y fteqcc
+
+    - name: Compile QuakeC
+      run: fteqcc progs.src
+
+    - name: Check for progs.dat
+      run: |
+        if [ -f "progs.dat" ]; then
+          echo "progs.dat found."
+        else
+          echo "progs.dat not found."
+          exit 1
+        fi

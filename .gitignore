@@ -1,0 +1,28 @@
+# Quake specifc
+progs.dat
+progs.lno
+*.pak
+config.cfg
+qconsole.log
+history.txt
+nul
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Binaries
+*.exe
+*.dll
+
+# Local settings
+.claude/
+
+# Ignore game data and engine
+/id1/
+/quakespasm/

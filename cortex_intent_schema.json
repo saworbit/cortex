@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cortex Intent Decision Frame",
+  "type": "object",
+  "required": ["self", "enemy_belief", "map", "intent", "action"],
+  "properties": {
+    "self": {
+      "type": "object",
+      "required": ["health", "armor", "stack", "weapons", "ammo", "powerups", "position", "mobility_state", "recent_damage"],
+      "properties": {
+        "health": { "type": "integer", "minimum": 0 },
+        "armor": { "type": "integer", "minimum": 0 },
+        "stack": { "type": "integer", "minimum": 0 },
+        "weapons": {
+          "type": "object",
+          "required": ["shotgun", "super_shotgun", "nailgun", "super_nailgun", "grenade_launcher", "rocket_launcher", "lightning_gun"],
+          "properties": {
+            "shotgun": { "type": "boolean" },
+            "super_shotgun": { "type": "boolean" },
+            "nailgun": { "type": "boolean" },
+            "super_nailgun": { "type": "boolean" },
+            "grenade_launcher": { "type": "boolean" },
+            "rocket_launcher": { "type": "boolean" },
+            "lightning_gun": { "type": "boolean" }
+          }
+        },
+        "ammo": {
+          "type": "object",
+          "required": ["shells", "nails", "rockets", "cells"],
+          "properties": {
+            "shells": { "type": "integer", "minimum": 0 },
+            "nails": { "type": "integer", "minimum": 0 },
+            "rockets": { "type": "integer", "minimum": 0 },
+            "cells": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "powerups": {
+          "type": "object",
+          "required": ["quad", "pent", "ring"],
+          "properties": {
+            "quad": { "type": "boolean" },
+            "pent": { "type": "boolean" },
+            "ring": { "type": "boolean" }
+          }
+        },
+        "position": { "type": "string" },
+        "mobility_state": {
+          "type": "string",
+          "enum": ["grounded", "airborne", "water", "ladder", "lift"]
+        },
+        "recent_damage": {
+          "type": "object",
+          "required": ["amount", "direction", "time_ms"],
+          "properties": {
+            "amount": { "type": "integer", "minimum": 0 },
+            "direction": { "type": "string" },
+            "time_ms": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "enemy_belief": {
+      "type": "object",
+      "required": ["last_seen", "estimated_stack", "estimated_weapons", "intent_guess", "confidence"],
+      "properties": {
+        "last_seen": {
+          "type": "object",
+          "required": ["position", "time_ms"],
+          "properties": {
+            "position": { "type": "string" },
+            "time_ms": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "estimated_stack": { "type": "string", "enum": ["low", "medium", "high"] },
+        "estimated_weapons": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["shotgun", "super_shotgun", "nailgun", "super_nailgun", "grenade_launcher", "rocket_launcher", "lightning_gun"]
+          }
+        },
+        "intent_guess": {
+          "type": "string",
+          "enum": ["rearm_or_control", "hunt", "fight", "unknown"]
+        },
+        "confidence": { "type": "number", "minimum": 0.0, "maximum": 1.0 }
+      }
+    },
+    "map": {
+      "type": "object",
+      "required": ["items", "control_score", "danger_zones", "safe_routes"],
+      "properties": {
+        "items": {
+          "type": "object",
+          "required": ["mega", "red_armor", "yellow_armor", "quad", "pent"],
+          "properties": {
+            "mega": { "$ref": "#/$defs/item_state" },
+            "red_armor": { "$ref": "#/$defs/item_state" },
+            "yellow_armor": { "$ref": "#/$defs/item_state" },
+            "quad": { "$ref": "#/$defs/item_state" },
+            "pent": { "$ref": "#/$defs/item_state" }
+          }
+        },
+        "control_score": { "type": "number", "minimum": -1.0, "maximum": 1.0 },
+        "danger_zones": { "type": "array", "items": { "type": "string" } },
+        "safe_routes": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "intent": {
+      "type": "string",
+      "enum": ["SURVIVE", "FINISH_KILL", "ENGAGE", "DISENGAGE", "REARM", "CONTROL_MAJOR", "DENY_CONTROL", "HUNT", "STABILISE"]
+    },
+    "action": {
+      "type": "object",
+      "required": ["movement_target", "weapon_preference", "posture", "disengage_thresholds"],
+      "properties": {
+        "movement_target": { "type": "string" },
+        "route": { "type": "string" },
+        "weapon_preference": {
+          "type": "string",
+          "enum": ["shotgun", "super_shotgun", "nailgun", "super_nailgun", "grenade_launcher", "rocket_launcher", "lightning_gun", "best_available"]
+        },
+        "posture": { "type": "string", "enum": ["aggressive", "cautious", "baiting"] },
+        "disengage_thresholds": {
+          "type": "object",
+          "required": ["min_stack", "max_recent_damage", "los_break_ms"],
+          "properties": {
+            "min_stack": { "type": "integer", "minimum": 0 },
+            "max_recent_damage": { "type": "integer", "minimum": 0 },
+            "los_break_ms": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "eval": {
+      "type": "object",
+      "properties": {
+        "threat_score": { "type": "number" },
+        "advantage_score": { "type": "number" },
+        "control_score": { "type": "number" }
+      }
+    }
+  },
+  "$defs": {
+    "item_state": {
+      "type": "object",
+      "required": ["respawns_in_ms", "controlled_by"],
+      "properties": {
+        "respawns_in_ms": { "type": "integer", "minimum": 0 },
+        "controlled_by": { "type": "string", "enum": ["self", "enemy", "none", "unknown"] }
+      }
+    }
+  }
+}

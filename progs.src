@@ -1,0 +1,55 @@
+progs.dat
+
+// CORTEX BOT - Full Quake Integration
+// ====================================
+// Compile with: fteqcc progs.src
+
+// System definitions (MUST BE FIRST)
+sysdefs.qc
+defs.qc
+forward.qc
+subs.qc
+
+// Combat & AI
+fight.qc
+ai.qc
+combat.qc
+
+// Items & Weapons
+items.qc
+weapons.qc
+
+// Player (before monsters - they need ThrowGib/ThrowHead)
+player.qc
+
+// World entities
+world.qc
+doors.qc
+buttons.qc
+triggers.qc
+plats.qc
+misc.qc
+
+// Monsters
+monsters.qc
+soldier.qc
+ogre.qc
+demon.qc
+dog.qc
+wizard.qc
+shambler.qc
+knight.qc
+hknight.qc
+zombie.qc
+fish.qc
+shalrath.qc
+enforcer.qc
+tarbaby.qc
+boss.qc
+oldone.qc
+
+// Client
+client.qc
+
+// CORTEX BOT
+bot.qc
