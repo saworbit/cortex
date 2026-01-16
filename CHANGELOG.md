@@ -1,5 +1,10 @@
 # CORTEX BOT Changelog
 
+## [Unreleased]
+
+### Changed
+- Introduced `Cortex_CoverDirection` and `inwater` helpers so `Cortex_FindCover` and the weapon selection logic no longer rely on missing `cos`, `sin`, or implicit water checks; this keeps the QuakeC purely on the canonical cover directions and `self.waterlevel`, allowing builds to finish with only the existing warnings noted by FTEQCC.
+
 ## [v4.2] "Hunter" - 2026-01-16
 
 ### Added
