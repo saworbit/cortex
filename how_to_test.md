@@ -20,10 +20,10 @@ tools\\fteqcc_win64\\fteqcc64.exe -srcfile progs.src
 Once you have compiled the bot, you can run it in Quake.
 
 1.  **Engine:** Use the `quakespasm.exe` engine located in the `quakespasm` directory.
-2.  **Launch Command:** To start a game with the bot, you'll need to use a command line like this. This example starts a listen server (needed for scoreboard slots), a deathmatch game on the map `e1m1`, and adds one bot to the game.
+2.  **Launch Command:** To start a game with the bot, you'll need to use a command line like this. This example starts a listen server (needed for scoreboard slots), enables developer/condebug logging, launches a deathmatch game on the map `e1m1`, and adds one bot to the game.
 
     ```sh
-quakespasm\\quakespasm.exe -listen 8 -game cortexbot +map e1m1 +deathmatch 1 +skill 3
+quakespasm\\quakespasm.exe -listen 8 +set developer 1 +set condebug 1 -game cortexbot +map e1m1 +deathmatch 1 +skill 3
     ```
 3.  **Adding a bot:** Once in the game, open the console (usually with the `~` key) and type the following command to add a bot:
     ```

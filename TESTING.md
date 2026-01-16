@@ -81,7 +81,7 @@ cp progs.dat ~/Library/Application\ Support/Quake/id1/
 
 **Using Quakespasm (recommended):**
 ```bash
-quakespasm +deathmatch 1 +map dm4
+quakespasm -listen 8 +set developer 1 +set condebug 1 +game cortexbot +deathmatch 1 +map dm4
 ```
 
 **Using original Quake:**
