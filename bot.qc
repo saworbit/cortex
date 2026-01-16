@@ -194,6 +194,8 @@ vector() Cortex_FindCover;
 float(float w_id) Cortex_CheckAmmo;
 void() Cortex_SelectBestWeapon;
 float(float current_yaw) Cortex_PhantomStep;
+vector(float idx) Cortex_CoverDirection;
+float inwater(entity ent);
 
 // External functions from Quake progs - already defined in weapons.qc/combat.qc
 // void(vector org, vector dir) launch_spike;
@@ -512,6 +514,25 @@ float(entity targ) Cortex_CanSee =
     return FALSE;
 };
 
+vector(float idx) Cortex_CoverDirection =
+{
+    if (idx == 0) return '1 0 0';
+    if (idx == 1) return '0.7071 0.7071 0';
+    if (idx == 2) return '0 1 0';
+    if (idx == 3) return '-0.7071 0.7071 0';
+    if (idx == 4) return '-1 0 0';
+    if (idx == 5) return '-0.7071 -0.7071 0';
+    if (idx == 6) return '0 -1 0';
+    if (idx == 7) return '0.7071 -0.7071 0';
+    return '1 0 0';
+};
+
+float inwater(entity ent) =
+{
+    if (!ent) return FALSE;
+    return (ent.waterlevel >= 2);
+};
+
 /*
 Cortex_FindCover
 Finds a nearby spot that breaks line of sight to the enemy.
@@ -527,13 +548,10 @@ vector() Cortex_FindCover =
 
     best_pos = self.origin; // Default: stay put if no cover found
 
-    // Cast 8 rays in a circle around the bot
-    for (i = 0; i < 360; i = i + 45)
+    // Cast 8 rays in preset directions around the bot
+    for (i = 0; i < 8; i = i + 1)
     {
-        // Create a vector for this angle
-        test_dir_x = cos(i * 0.01745); // Deg to Rad approx
-        test_dir_y = sin(i * 0.01745);
-        test_dir_z = 0;
+        test_dir = Cortex_CoverDirection(i);
 
         // Check a spot 150 units away
         test_pos = self.origin + (test_dir * 150);
