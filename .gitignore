@@ -26,3 +26,4 @@ Thumbs.db
 # Ignore game data and engine
 /id1/
 /quakespasm/
+tools/meqcc14/meqcc.txt
